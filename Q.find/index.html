@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Lively Chat</title>
+
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase.js"></script>
+
+	
+	<!--/tags -->
+
+	<!--<script>
+		document.getElementById("myCarousel").style.display="block";
+		document.getElementById("display_output").style.display="none";
+	</script>-->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Lively Chat Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+	<script type="application/x-javascript">
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<!--//tags -->
+	<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+	<link href="css/font-awesome.css" rel="stylesheet">
+	<!-- //for bootstrap working -->
+	<link href="//fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500,500i,600,600i,700,700i,800" rel="stylesheet">
+	<link href='//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,900,900italic,700italic'
+	    rel='stylesheet' type='text/css'>
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,600,600i,700" rel="stylesheet">
+
+	<style>
+		#signout{
+	background: #ee4f4f;
+	color: #fff;
+	font-size: 0.9em;
+	padding: 0.6em 1em;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	
+		}
+	</style>
+
+<style>
+
+#viewchat{
+background: #ee4f4f;
+color: #fff;
+font-size: 0.9em;
+padding: 0.6em 1em;
+text-align: center;
+text-transform: uppercase;
+letter-spacing: 1px;
+
+	}
+</style>
+</head>
+
+<body>
+
+	<script>
+			var firebaseConfig = {
+    apiKey: "AIzaSyCK1IfsV5yQb_zOKLXiGHGPAjsKg2j2YpU",
+    authDomain: "live-chat-ac587.firebaseapp.com",
+    projectId: "live-chat-ac587",
+    storageBucket: "live-chat-ac587.appspot.com",
+    messagingSenderId: "599264208238",
+    appId: "1:599264208238:web:02548bd5d527ce1b340d7f"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  var database = firebase.database();
+	const auth=firebase.auth();
+
+let sleep = ms => {  
+		return new Promise(resolve => setTimeout(resolve, ms));  
+	};
+	function disableBtn() {
+    document.getElementById("viewchat").disabled = true;
+
+	var chatRef = database.ref('user_name');
+	
+    chatRef.on('value', function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+	var ol=document.getElementById("list");
+    var listItem = document.createElement("li");
+    listItem.textContent= childSnapshot.val(); 
+	ol.appendChild(listItem);
+	  /*console.log(childData);*/
+    });
+});
+
+	}
+	function signOut(){
+		auth.signOut();
+		alert("Signed Out");
+		sleep(4000).then(() => {  
+			window.location.href ="homepage.html";
+			}); 
+	}
+
+	function viewChat(){
+		
+		auth.viewChat();
+		alert("See the chat");
+		
+		
+	}
+
+	
+
+	
+	</script>
+	<!-- header -->
+	<div class="header" id="home">
+		<div class="top_menu_w3layouts">
+			
+			<div class="header_right">
+				<ul class="forms_right">
+					<li><button type="button" id="signout" onclick="signOut()" style="background-color: red;" > Sign Out</button></li>
+				</ul>
+
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+
+
+	</div>
+	<!-- banner -->
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		
+			<div class="item active">
+				<div class="container">
+					<div class="carousel-caption">
+						<h3>Delivering successful <span>results.</span></h3>
+						<p>Solutions made easy</p>
+						<div class="action_page">
+								<div class="row">
+									<!--<div class="col-25">
+									<label for="input_url">Enter link</label>
+									</div>-->
+									<div class="col-50">
+										<input type="url" id="url_link"  placeholder="Enter URL for live stream">
+										<input type="submit" onclick="displayVideo()"  id="search" value="Submit">
+									</div>
+									<script>
+
+											
+
+										function displayVideo() {
+											var x = document.getElementById("url_link").value;
+											var l="<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/".concat(x.substring(17),"\"title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>");
+											document.getElementById("demo").innerHTML = l;
+
+											document.getElementById("myCarousel").style.display="none";
+											document.getElementById("display_output").style.display="block";
+										}
+
+									</script>
+						</div>				
+					</div>
+				</div>
+						
+			</div>
+		</div>
+	</div>
+			
+	<div class="display_content" id ="display_output">
+				<div class="display_video">
+					<p id="demo"></p>	
+				</div>
+				<div class="display_chat">
+					<ol id="list"></ol>
+				</div>
+				<div class="chat_button">
+					<button type="button" id="viewchat" onClick="disableBtn()" style="background-color: dodgerblue;" > View Chat</button>
+
+				</div>
+	</div>
+	
+	
+
+
+
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+</body>
+
+</html>
